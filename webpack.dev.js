@@ -8,7 +8,7 @@ var cfg = {
 }
 
 module.exports = {
-	entry: path.join(cfg.srcPath, 'js/main.js'),
+	entry: path.join(cfg.srcPath, 'ts/main.ts'),
 	output: {
 		path: cfg.distPath + '/js',
 	},
@@ -19,7 +19,21 @@ module.exports = {
 			cfg.srcPath,
 		],
 		port: 8000,
-	},
+    },
+    
+    module: {
+        rules: [
+            {
+              test: /\.tsx?$/,
+              use: 'ts-loader',
+              exclude: /node_modules/,
+            },
+        ],
+    },
+
+    resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ],
+    },
 
 	plugins: [
         new CleanWebpackPlugin(),
