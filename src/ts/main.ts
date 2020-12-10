@@ -1,3 +1,5 @@
+// ATTENTION: this is very old js code simply rewritten to typescript
+
 (function() {
 	// config
 	var fps = 30;
