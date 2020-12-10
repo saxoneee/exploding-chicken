@@ -7,3 +7,7 @@ click on chicken to let them burst
 * npm install
 * npm run dev
 * npm run build
+
+## usage
+
+https://saxoneee.github.io/exploding-chicken/dist/
