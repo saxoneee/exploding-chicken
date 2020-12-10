@@ -2,6 +2,8 @@
 
 click on chicken to let them burst
 
-## usage
+## dev
 
-* play here: https://saxoneee.github.io/exploding-chicken/
+* npm install
+* npm run dev
+* npm run build
