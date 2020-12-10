@@ -1,4 +1,5 @@
 // ATTENTION: this is very old js code simply rewritten to typescript
+import Utils from './utils/utils';
 
 (function() {
 	// config
@@ -12,11 +13,6 @@
 	var context:any = null;
 	var start = null;
 	var chickens:any = [];
-
-	// utils
-	var getRandom = function(min:number, max:number) {
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	}
 
 	var init = function() {
 		console.log('init');
@@ -149,15 +145,15 @@
 	
 						if (_me._that.movement) {
 							// bewegungsrichtung festlegen
-							var _directionChange = getRandom((10 * _me._that.anger) / 2, 600);
+							var _directionChange = Utils.getRandom((10 * _me._that.anger) / 2, 600);
 							if (_directionChange > 500) {
 								_me._that.spriteDirection = (_me._that.spriteDirection === 1) ? 0 : 1;
 							}
 	
 							// bewegen
-							var _shoudIStayOrShouldIGo = getRandom(10 * _me._that.anger, 600);
-							var _upDownChange = getRandom((10 * _me._that.anger) / 2, 600);
-							var _horizontalVertical = getRandom(0, 500);
+							var _shoudIStayOrShouldIGo = Utils.getRandom(10 * _me._that.anger, 600);
+							var _upDownChange = Utils.getRandom((10 * _me._that.anger) / 2, 600);
+							var _horizontalVertical = Utils.getRandom(0, 500);
 							if (_shoudIStayOrShouldIGo > 300) { // bewegen?
 								if (_horizontalVertical > 250) { // horizontal?
 									if (_me._that.spriteDirection === 0) {
@@ -225,9 +221,9 @@
 			context: context,
 			image: _imgChicken,
 			width: spriteSize,
-			top: getRandom(30, canvas.height * 0.75),
-			left: getRandom(30, canvas.width * 0.75),
-			anger: getRandom(20, 30),
+			top: Utils.getRandom(30, canvas.height * 0.75),
+			left: Utils.getRandom(30, canvas.width * 0.75),
+			anger: Utils.getRandom(20, 30),
 			// top: 0,
 			// left: 0,
 			// anger: 0,
