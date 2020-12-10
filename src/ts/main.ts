@@ -106,7 +106,9 @@
 		_that:any = {};
 
 		constructor(options: any) {
-			this._that = {
+			const _me = this;
+
+			_me._that = {
 				remove: false,
 				top: options.top,
 				left: options.left,
@@ -117,75 +119,75 @@
 				spriteIndex: options.spriteIndex || 0, // zurzeit aktives sprite-bild
 	
 				explode: function(callback:any) {
-					if (this._explosionPhase === 0) {
-						this._that.spriteDirection = 4;
-						this._that.movement = false;
-						this._that.spriteMove = true;
-						this._that.anger = 25;
-						this._that.spriteIndex = 0;
-						this._explosionPhase++;
-						this._explode = true;
-						this._explodeCallback = callback;
+					if (_me._explosionPhase === 0) {
+						_me._that.spriteDirection = 4;
+						_me._that.movement = false;
+						_me._that.spriteMove = true;
+						_me._that.anger = 25;
+						_me._that.spriteIndex = 0;
+						_me._explosionPhase++;
+						_me._explode = true;
+						_me._explodeCallback = callback;
 					}
 				},
 	
 				render: function() {
-					this._frame++;
+					_me._frame++;
 	
 					// sprite-bild errechnen
-					if (this._frame + this._that.anger > fps && this._that.spriteMove) {
-						this._frame = 0;
-						this._that.spriteIndex++;
+					if (_me._frame + _me._that.anger > fps && _me._that.spriteMove) {
+						_me._frame = 0;
+						_me._that.spriteIndex++;
 	
 						// explodieren
-						if (this._explode === true) {
-							this._explosionPhase++;
-							if (this._explosionPhase >= options.sprites[4].length) {
-								this._that.remove = true;
+						if (_me._explode === true) {
+							_me._explosionPhase++;
+							if (_me._explosionPhase >= options.sprites[4].length) {
+								_me._that.remove = true;
 							}
 						}
 	
-						if (this._that.movement) {
+						if (_me._that.movement) {
 							// bewegungsrichtung festlegen
-							var _directionChange = getRandom((10 * this._that.anger) / 2, 600);
+							var _directionChange = getRandom((10 * _me._that.anger) / 2, 600);
 							if (_directionChange > 500) {
-								this._that.spriteDirection = (this._that.spriteDirection === 1) ? 0 : 1;
+								_me._that.spriteDirection = (_me._that.spriteDirection === 1) ? 0 : 1;
 							}
 	
 							// bewegen
-							var _shoudIStayOrShouldIGo = getRandom(10 * this._that.anger, 600);
-							var _upDownChange = getRandom((10 * this._that.anger) / 2, 600);
+							var _shoudIStayOrShouldIGo = getRandom(10 * _me._that.anger, 600);
+							var _upDownChange = getRandom((10 * _me._that.anger) / 2, 600);
 							var _horizontalVertical = getRandom(0, 500);
 							if (_shoudIStayOrShouldIGo > 300) { // bewegen?
 								if (_horizontalVertical > 250) { // horizontal?
-									if (this._that.spriteDirection === 0) {
-										this._that.left = this._that.left + 5;
+									if (_me._that.spriteDirection === 0) {
+										_me._that.left = _me._that.left + 5;
 									} else {
-										this._that.left = this._that.left - 5;
+										_me._that.left = _me._that.left - 5;
 									}
 	
-									if (this._that.left < 0) {
-										this._that.left = 0;
+									if (_me._that.left < 0) {
+										_me._that.left = 0;
 									}
 	
-									if (this._that.left + spriteSize > canvas.width) {
-										this._that.left = canvas.width - spriteSize;
+									if (_me._that.left + spriteSize > canvas.width) {
+										_me._that.left = canvas.width - spriteSize;
 									}
 								} else { // vertikal
 									if (_upDownChange > 500) {
-										this._upDown = (this._upDown === 0) ? 1 : 0;
+										_me._upDown = (_me._upDown === 0) ? 1 : 0;
 									}
 	
-									if (this._upDown === 0) {
-										this._that.top = this._that.top + 5;
+									if (_me._upDown === 0) {
+										_me._that.top = _me._that.top + 5;
 									} else {
-										this._that.top = this._that.top - 5;
+										_me._that.top = _me._that.top - 5;
 									}
-									if (this._that.top < 0) {
-										this._that.top = 0;
+									if (_me._that.top < 0) {
+										_me._that.top = 0;
 									}
-									if (this._that.top + spriteSize >= canvas.height) {
-										this._that.top = canvas.height - spriteSize;
+									if (_me._that.top + spriteSize >= canvas.height) {
+										_me._that.top = canvas.height - spriteSize;
 									}
 								}
 							}
@@ -193,19 +195,19 @@
 	
 					}
 					// index je nach menge der sprites zurücksetzen
-					if (this._that.spriteIndex >= options.sprites[this._that.spriteDirection].length) {
-						this._that.spriteIndex = 0;
+					if (_me._that.spriteIndex >= options.sprites[_me._that.spriteDirection].length) {
+						_me._that.spriteIndex = 0;
 					}
 	
 					// Draw the animation
 					options.context.drawImage(
 						options.image,
-						options.sprites[this._that.spriteDirection][this._that.spriteIndex][0],
-						options.sprites[this._that.spriteDirection][this._that.spriteIndex][1],
+						options.sprites[_me._that.spriteDirection][_me._that.spriteIndex][0],
+						options.sprites[_me._that.spriteDirection][_me._that.spriteIndex][1],
 						options.width,
 						options.height,
-						this._that.left,
-						this._that.top,
+						_me._that.left,
+						_me._that.top,
 						options.width,
 						options.height);
 				}
