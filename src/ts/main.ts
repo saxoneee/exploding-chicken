@@ -22,7 +22,6 @@ var init = function() {
 
 	width = document.body.offsetWidth;
 	height = document.body.offsetHeight;
-	console.log(height);
 
 	canvas = document.createElement('canvas');
 	canvas.height = height;
@@ -40,14 +39,14 @@ var init = function() {
 	loop();
 
 	spawn();
-	spawn();
-	spawn();
-	spawn();
-	spawn();
-	spawn();
-	spawn();
-	spawn();
-	spawn();
+	// spawn();
+	// spawn();
+	// spawn();
+	// spawn();
+	// spawn();
+	// spawn();
+	// spawn();
+	// spawn();
 
 
 };
@@ -98,66 +97,22 @@ var hunt = function(pEvent:any) {
 }
 
 var spawn = function() {
-	/*
-	var _imgChicken = document.getElementById('chicken'),
-		_sprite = new Sprite({
-			context: context,
-			image: _imgChicken,
-			width: spriteSize,
-			top: Utils.getRandom(30, canvas.height * 0.75),
-		left: Utils.getRandom(30, canvas.width * 0.75),
-		anger: Utils.getRandom(20, 30),
-		// top: 0,
-		// left: 0,
-		// anger: 0,
-		// movement: false,
-		// spriteMove: true,
-		// spriteIndex: 4,
-		// spriteDirection: 4,
+	chickens.push(new Chicken({
+		width: spriteSize,
 		height: spriteSize,
-		sprites: [
-			[ // rechts
-				[66, 22],
-				[98, 22],
-				[130, 24],
-				[162, 24]
-			],
-			[ // links
-				[64, 90],
-				[96, 89],
-				[128, 88],
-				[160, 88]
-			],
-			[], // oben
-			[], // unten
-			[ // explosion
-				[240, 22],
-				[205, 22],
-				[23, 87],
-				[23, 56],
-				[23, 20]
-			]
-		],
-	}).getSprite();
-	*/
-	chickens.push(new Chicken());
+	}));
 };
 
 var redraw = function() {
 	screen.clear();
-	
-
 	for (var _i = chickens.length - 1; _i >= 0; _i--) {
 		screen.insert(chickens[_i].get());
-		
-		
-		
-		if (chickens[_i].remove === false) {
+		// if (chickens[_i].remove === false) {
 			
-		} else {
-			chickens.splice(_i, 1);
-			spawn();
-		}
+		// } else {
+		// 	chickens.splice(_i, 1);
+		// 	spawn();
+		// }
 	}
 }
 
