@@ -29,20 +29,43 @@ export default class chicken {
         ]
     }
 
+    path:Array<any> = [];
+
     constructor(pConfig:any){
         this.helperCanvas.width = pConfig.width;
         this.helperCanvas.height = pConfig.height;
         this.helperContext = this.helperCanvas.getContext('2d');
     }
 
+    _createPath(){
+        for(var _i = 0; _i < 200; _i++){
+
+            this.path.push({
+                x: _i,
+                y: 0
+            });
+        }
+    }
+
+    _getPath(){
+        return this.path.shift();
+    }
+
     get(){
         var _sprite = this.sprites.right[0];
+        if(this.path.length == 0){
+            this._createPath();
+        }
+        var _path = this._getPath();
+
+        var _x = Utils.getRandom(0,220);
+        var _y = Utils.getRandom(0,220);
         this.helperContext.drawImage(this.sprite,_sprite[0] * -1,_sprite[1] * -1);
 
         return {
             img: this.helperCanvas,
-            x: Utils.getRandom(0,120),
-            y: Utils.getRandom(0,120)
+            x: _path.x,
+            y: _path.y
 
         }
     }
