@@ -1,5 +1,7 @@
 // ATTENTION: this is very old js code simply rewritten to typescript
 import Utils from './utils/utils';
+import Chicken from './chicken';
+import Screen from './screen';
 
 // config
 var fps = 30;
@@ -12,6 +14,8 @@ var canvas:any = null;
 var context:any = null;
 var start = null;
 var chickens:any = [];
+
+var screen:Screen;
 
 var init = function() {
 	console.log('init');
@@ -28,6 +32,8 @@ var init = function() {
 
 	document.body.appendChild(canvas);
 	context = canvas.getContext("2d");
+
+	screen = new Screen(canvas);
 
 	// var dateText:any = new text(); // TODO
 
@@ -91,136 +97,14 @@ var hunt = function(pEvent:any) {
 	}
 }
 
-class sprite {
-	_frame:any = 0;
-	_move:any = false;
-	_upDown:any = 0;
-	_explode:any = false;
-	_explodeCallback:any = null;
-	_explosionPhase:any = 0;
-	_that:any = {};
-
-	constructor(options: any) {
-		const _me = this;
-
-		_me._that = {
-			remove: false,
-			top: options.top,
-			left: options.left,
-			anger: options.anger || 0, // schnelligkeit der Bewegung
-			movement: (options.movement != null) ? options.movement : true,
-			spriteDirection: options.spriteDirection || 0, // richtung, in die das sprite schaut
-			spriteMove: (options.spriteMove != null) ? options.spriteMove : true, // animation
-			spriteIndex: options.spriteIndex || 0, // zurzeit aktives sprite-bild
-
-			explode: function(callback:any) {
-				if (_me._explosionPhase === 0) {
-					_me._that.spriteDirection = 4;
-					_me._that.movement = false;
-					_me._that.spriteMove = true;
-					_me._that.anger = 25;
-					_me._that.spriteIndex = 0;
-					_me._explosionPhase++;
-					_me._explode = true;
-					_me._explodeCallback = callback;
-				}
-			},
-
-			render: function() {
-				_me._frame++;
-
-				// sprite-bild errechnen
-				if (_me._frame + _me._that.anger > fps && _me._that.spriteMove) {
-					_me._frame = 0;
-					_me._that.spriteIndex++;
-
-					// explodieren
-					if (_me._explode === true) {
-						_me._explosionPhase++;
-						if (_me._explosionPhase >= options.sprites[4].length) {
-							_me._that.remove = true;
-						}
-					}
-
-					if (_me._that.movement) {
-						// bewegungsrichtung festlegen
-						var _directionChange = Utils.getRandom((10 * _me._that.anger) / 2, 600);
-						if (_directionChange > 500) {
-							_me._that.spriteDirection = (_me._that.spriteDirection === 1) ? 0 : 1;
-						}
-
-						// bewegen
-						var _shoudIStayOrShouldIGo = Utils.getRandom(10 * _me._that.anger, 600);
-						var _upDownChange = Utils.getRandom((10 * _me._that.anger) / 2, 600);
-						var _horizontalVertical = Utils.getRandom(0, 500);
-						if (_shoudIStayOrShouldIGo > 300) { // bewegen?
-							if (_horizontalVertical > 250) { // horizontal?
-								if (_me._that.spriteDirection === 0) {
-									_me._that.left = _me._that.left + 5;
-								} else {
-									_me._that.left = _me._that.left - 5;
-								}
-
-								if (_me._that.left < 0) {
-									_me._that.left = 0;
-								}
-
-								if (_me._that.left + spriteSize > canvas.width) {
-									_me._that.left = canvas.width - spriteSize;
-								}
-							} else { // vertikal
-								if (_upDownChange > 500) {
-									_me._upDown = (_me._upDown === 0) ? 1 : 0;
-								}
-
-								if (_me._upDown === 0) {
-									_me._that.top = _me._that.top + 5;
-								} else {
-									_me._that.top = _me._that.top - 5;
-								}
-								if (_me._that.top < 0) {
-									_me._that.top = 0;
-								}
-								if (_me._that.top + spriteSize >= canvas.height) {
-									_me._that.top = canvas.height - spriteSize;
-								}
-							}
-						}
-					}
-
-				}
-				// index je nach menge der sprites zurücksetzen
-				if (_me._that.spriteIndex >= options.sprites[_me._that.spriteDirection].length) {
-					_me._that.spriteIndex = 0;
-				}
-
-				// Draw the animation
-				options.context.drawImage(
-					options.image,
-					options.sprites[_me._that.spriteDirection][_me._that.spriteIndex][0],
-					options.sprites[_me._that.spriteDirection][_me._that.spriteIndex][1],
-					options.width,
-					options.height,
-					_me._that.left,
-					_me._that.top,
-					options.width,
-					options.height);
-			}
-		}
-		}
-	
-	getSprite(){
-		return this._that;
-	}
-}
-
 var spawn = function() {
-	var _imgChicken = document.getElementById('chicken');
-	chickens.push(new sprite({
-		context: context,
-		image: _imgChicken,
-		width: spriteSize,
-		top: Utils.getRandom(30, canvas.height * 0.75),
+	/*
+	var _imgChicken = document.getElementById('chicken'),
+		_sprite = new Sprite({
+			context: context,
+			image: _imgChicken,
+			width: spriteSize,
+			top: Utils.getRandom(30, canvas.height * 0.75),
 		left: Utils.getRandom(30, canvas.width * 0.75),
 		anger: Utils.getRandom(20, 30),
 		// top: 0,
@@ -254,15 +138,22 @@ var spawn = function() {
 				[23, 20]
 			]
 		],
-	}).getSprite());
+	}).getSprite();
+	*/
+	chickens.push(new Chicken());
 };
 
 var redraw = function() {
-	context.clearRect(0, 0, canvas.width, canvas.height);
+	screen.clear();
+	
 
 	for (var _i = chickens.length - 1; _i >= 0; _i--) {
+		screen.insert(chickens[_i].get());
+		
+		
+		
 		if (chickens[_i].remove === false) {
-			chickens[_i].render();
+			
 		} else {
 			chickens.splice(_i, 1);
 			spawn();
