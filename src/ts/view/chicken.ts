@@ -38,6 +38,8 @@ export default class chicken extends AbstractView{
 
     currentPathX:number;
     currentPathY:number;
+    directionX:number;
+    directionY:number;
 
     screen:Screen;
 
@@ -64,13 +66,14 @@ export default class chicken extends AbstractView{
      */
     _createPath(pForceDirectionX:any, pForceDirectionY:any){
         let _posStartX = this.currentPathX,
-            _posStartY = this.currentPathY,
-            _directionX = (pForceDirectionX !== false) ? pForceDirectionX : Utils.getRandom(-1,1),
-            _directionY = (pForceDirectionY !== false) ? pForceDirectionY : Utils.getRandom(-1,1);
+            _posStartY = this.currentPathY;
+
+        this.directionX = (pForceDirectionX !== false) ? pForceDirectionX : Utils.getRandom(-1,1);
+        this.directionY = (pForceDirectionY !== false) ? pForceDirectionY : Utils.getRandom(-1,1);
 
         for(var _i = 0; _i < Utils.getRandom(1,1000); _i++){
-            const _nextX = _posStartX + (_i * _directionX),
-                _nextY = _posStartY + (_i * _directionY);
+            const _nextX = _posStartX + (_i * this.directionX),
+                _nextY = _posStartY + (_i * this.directionY);
 
             this.path.push({
                 x: _nextX,
@@ -136,8 +139,13 @@ export default class chicken extends AbstractView{
     }
 
     _drawChicken(){
-        // console.log(this.currentSpritePos);
-        var _sprite = this.sprites.right[this.currentSpritePos];
+        var _sprite:any;
+        
+        if(this.directionX >= 0){
+            _sprite = this.sprites.right[this.currentSpritePos];
+        }else{
+            _sprite = this.sprites.left[this.currentSpritePos];
+        }
         
         this.helperContext.clearRect(0, 0, this.helperCanvas.width, this.helperCanvas.height);
         this.helperContext.drawImage(this.sprite,_sprite[0] * -1,_sprite[1] * -1);
