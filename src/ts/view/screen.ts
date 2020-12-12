@@ -1,12 +1,17 @@
 import AbstractView from './abstractView';
+import Chicken from './chicken';
 
 export default class Screen extends AbstractView{
     canvas: HTMLCanvasElement;
     context: any;
+    chickens:Array<Chicken> = [];
 
-    constructor(pCanvas: HTMLCanvasElement){
+    constructor(pWidth:number, pHeight: number){
         super();
-        this.canvas = pCanvas;
+
+        this.canvas = document.createElement('canvas');
+        this.canvas.height = pWidth;
+        this.canvas.width = pHeight;
         this.context = this.canvas.getContext('2d');
     }
 
@@ -22,11 +27,20 @@ export default class Screen extends AbstractView{
      * 
      * @param pChickenCfgToInsert 
      */
-    insert(pChickenCfgToInsert:any){
-        this.context.drawImage(
-            pChickenCfgToInsert.img,
-            pChickenCfgToInsert.x,
-            pChickenCfgToInsert.y);
+    insert(pChicken:Chicken){
+        this.chickens.push(pChicken);
+    }
+
+    tick(){
+        for(let _i = 0; _i < this.chickens.length; _i++){
+            const _chicken = this.chickens[_i];
+            _chicken.tick();
+            const _chickenCfg = _chicken.get();
+            this.context.drawImage(
+                _chickenCfg.img,
+                _chickenCfg.x,
+                _chickenCfg.y);
+        }
     }
 
     /**
@@ -39,5 +53,13 @@ export default class Screen extends AbstractView{
             bottom: this.canvas.height,
             right: this.canvas.width
         }
+    }
+
+    get():HTMLCanvasElement{
+        return this.canvas;
+    }
+
+    hunt(){
+
     }
 }
