@@ -12,7 +12,6 @@ var spriteSize = 31;
 // intern
 var canvas:any = null;
 var context:any = null;
-var start = null;
 var chickens:any = [];
 
 var screen:Screen;
@@ -100,6 +99,7 @@ var spawn = function() {
 	var _chicken = new Chicken({
 		width: spriteSize,
 		height: spriteSize,
+		screen: screen
 	});
 	chickens.push(_chicken);
 };

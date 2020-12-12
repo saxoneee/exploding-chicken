@@ -28,4 +28,16 @@ export default class Screen extends AbstractView{
             pChickenCfgToInsert.x,
             pChickenCfgToInsert.y);
     }
+
+    /**
+     * 
+     */
+    getBorders():any{
+        return {
+            top:0,
+            left:0,
+            bottom: this.canvas.height,
+            right: this.canvas.width
+        }
+    }
 }
