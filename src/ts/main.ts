@@ -39,14 +39,14 @@ var init = function() {
 	loop();
 
 	spawn();
-	// spawn();
-	// spawn();
-	// spawn();
-	// spawn();
-	// spawn();
-	// spawn();
-	// spawn();
-	// spawn();
+	spawn();
+	spawn();
+	spawn();
+	spawn();
+	spawn();
+	spawn();
+	spawn();
+	spawn();
 
 
 };
@@ -97,10 +97,11 @@ var hunt = function(pEvent:any) {
 }
 
 var spawn = function() {
-	chickens.push(new Chicken({
+	var _chicken = new Chicken({
 		width: spriteSize,
 		height: spriteSize,
-	}));
+	});
+	chickens.push(_chicken);
 };
 
 var redraw = function() {
@@ -109,6 +110,7 @@ var redraw = function() {
 	for (var _i = chickens.length - 1; _i >= 0; _i--) {
 		var _chicken = chickens[_i];
 		_chicken.tick();
+		// console.log(_chicken);
 		screen.insert(_chicken.get());
 		// if (chickens[_i].remove === false) {
 			

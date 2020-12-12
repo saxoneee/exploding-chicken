@@ -8,6 +8,8 @@ export default class chicken extends AbstractView{
     helperCanvas:HTMLCanvasElement = document.createElement('canvas');
     helperContext:any;
 
+    _viewIdPrefix = 'ch_';
+
     sprites = {
         'right': [ // rechts
             [66, 22],
@@ -35,6 +37,9 @@ export default class chicken extends AbstractView{
 
     path:Array<any> = [];
 
+    currentPathX:number;
+    currentPathY:number;
+
     constructor(pConfig:any){
         super();
         this.helperCanvas.width = pConfig.width;
@@ -42,14 +47,19 @@ export default class chicken extends AbstractView{
         this.helperContext = this.helperCanvas.getContext('2d');
 
         this.currentSpritePos = 0;
+        this.currentPathX = Utils.getRandom(0,200);
+        this.currentPathY = Utils.getRandom(0,200);
     }
 
     _createPath(){
-        for(var _i = 0; _i < 200; _i++){
+        let _start = this.currentPathX,
+            _stop = _start + Utils.getRandom(50,200);
+
+        for(var _i = _start; _i < _stop; _i++){
 
             this.path.push({
                 x: _i,
-                y: 0
+                y: this.currentPathY
             });
         }
     }
@@ -85,6 +95,9 @@ export default class chicken extends AbstractView{
     get(){
         var _chicken = this._drawChicken();
         var _path = this._getPath();
+
+        this.currentPathX = _path.x;
+        this.currentPathY = _path.y;
 
         return {
             img: _chicken,
