@@ -1,6 +1,5 @@
 import Utils from '../utils/utils';
 import Screen from './screen';
-import Cfg from '../cfg/cfg';
 import AbstractView from './abstractView';
 
 export default class chicken extends AbstractView{
@@ -10,20 +9,20 @@ export default class chicken extends AbstractView{
     helperContext:any;
 
     sprites = {
-        'right': [ // rechts
+        right: [
             [66, 22],
             [98, 22],
             [130, 24],
             [162, 24]
         ],
-        'left': [ // links
+        left: [
             [64, 90],
             [96, 89],
             [128, 88],
             [160, 88]
         ],
        
-        'explosion': [ // explosion
+        explosion: [
             [240, 22],
             [205, 22],
             [23, 87],

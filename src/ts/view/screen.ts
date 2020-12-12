@@ -6,7 +6,7 @@ export default class Screen extends AbstractView{
     context: any;
     chickens:Array<Chicken> = [];
 
-    constructor(pWidth:number, pHeight: number){
+    constructor(pWidth:number, pHeight: number, pScreenDest:HTMLElement){
         super();
 
         this.canvas = document.createElement('canvas');
@@ -15,6 +15,8 @@ export default class Screen extends AbstractView{
         this.context = this.canvas.getContext('2d');
 
         this.canvas.addEventListener('mousedown', (e) => this.hunt(e));
+
+        pScreenDest.appendChild(this.get());
     }
 
     /**
@@ -53,7 +55,7 @@ export default class Screen extends AbstractView{
 
         this.chickens = this.chickens.filter(function(value, index) {
             return _chickensToRemove.indexOf(index) == -1;
-        })
+        });
     }
 
     /**
