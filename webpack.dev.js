@@ -8,9 +8,10 @@ var cfg = {
 }
 
 module.exports = {
-	entry: path.join(cfg.srcPath, 'ts/main.ts'),
+    entry: path.join(cfg.srcPath, 'ts/main.ts'),
+    devtool: 'inline-source-map',
 	output: {
-		path: cfg.distPath + '/js',
+		path: cfg.distPath,
 	},
 
 	devServer: {
