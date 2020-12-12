@@ -64,7 +64,7 @@ export default class chicken extends AbstractView{
     tick(){
         super.tick();
 
-        if(this._tickCounter == 30){
+        if(this._tickCounter%10 == 0){
             this.currentSpritePos++;
         }
         if(this.currentSpritePos >=4){
