@@ -51,15 +51,20 @@ export default class chicken extends AbstractView{
         this.currentPathY = Utils.getRandom(0,200);
     }
 
+    /**
+     * generate the route
+     */
     _createPath(){
-        let _start = this.currentPathX,
-            _stop = _start + Utils.getRandom(50,200);
+        let _posStartX = this.currentPathX,
+            _posStartY = this.currentPathY,
+            _directionX = Utils.getRandom(-1,1),
+            _directionY = Utils.getRandom(-1,1);
 
-        for(var _i = _start; _i < _stop; _i++){
+        for(var _i = 0; _i < Utils.getRandom(1,1000); _i++){
 
             this.path.push({
-                x: _i,
-                y: this.currentPathY
+                x: _posStartX + (_i * _directionX),
+                y: _posStartY + (_i * _directionY),
             });
         }
     }
