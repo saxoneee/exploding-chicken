@@ -43,6 +43,8 @@ export default class chicken extends AbstractView{
 
     screen:Screen;
 
+    exploding:boolean = false;
+
     constructor(pConfig:any){
         super();
         this.helperCanvas.width = pConfig.width;
@@ -133,18 +135,28 @@ export default class chicken extends AbstractView{
         if(this._tickCounter%10 == 0){
             this.currentSpritePos++;
         }
-        if(this.currentSpritePos >=4){
-            this.currentSpritePos = 0;
+
+        if(!this.exploding){
+            if(this.currentSpritePos >=4){
+                this.currentSpritePos = 0;
+            }
+        }else{
+            if(this.currentSpritePos >=5){
+                this.currentSpritePos = 0;
+            }
         }
     }
 
     _drawChicken(){
         var _sprite:any;
-        
+       
         if(this.directionX >= 0){
             _sprite = this.sprites.right[this.currentSpritePos];
         }else{
             _sprite = this.sprites.left[this.currentSpritePos];
+        }
+        if(this.exploding){
+            _sprite = this.sprites.explosion[this.currentSpritePos];
         }
         
         this.helperContext.clearRect(0, 0, this.helperCanvas.width, this.helperCanvas.height);
@@ -153,17 +165,30 @@ export default class chicken extends AbstractView{
         return this.helperCanvas;
     }
 
-    get(){
-        var _chicken = this._drawChicken();
-        var _path = this._getPath();
+    explode(){
+        this.currentSpritePos = 0;
+        this.exploding = true;
+    }
 
-        this.currentPathX = _path.x;
-        this.currentPathY = _path.y;
+    get(){
+        let _chicken:HTMLCanvasElement = this._drawChicken();
+        let _path:any = this._getPath();
+
+        if(!this.exploding){
+            this.currentPathX = _path.x;
+            this.currentPathY = _path.y;
+        }
+
+        if(this.exploding && this.currentSpritePos == 4){
+            return false;
+        }
 
         return {
             img: _chicken,
-            x: _path.x,
-            y: _path.y
+            x: this.currentPathX,
+            y: this.currentPathY,
+            width: this.helperCanvas.width,
+            height: this.helperCanvas.height,
 
         }
     }

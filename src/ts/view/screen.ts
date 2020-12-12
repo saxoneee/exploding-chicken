@@ -13,6 +13,8 @@ export default class Screen extends AbstractView{
         this.canvas.height = pWidth;
         this.canvas.width = pHeight;
         this.context = this.canvas.getContext('2d');
+
+        this.canvas.addEventListener('mousedown', (e) => this.hunt(e));
     }
 
     /**
@@ -32,15 +34,26 @@ export default class Screen extends AbstractView{
     }
 
     tick(){
+        const _chickensToRemove:Array<number> = [];
+
         for(let _i = 0; _i < this.chickens.length; _i++){
             const _chicken = this.chickens[_i];
             _chicken.tick();
             const _chickenCfg = _chicken.get();
-            this.context.drawImage(
-                _chickenCfg.img,
-                _chickenCfg.x,
-                _chickenCfg.y);
+
+            if(_chickenCfg !== false){
+                this.context.drawImage(
+                    _chickenCfg.img,
+                    _chickenCfg.x,
+                    _chickenCfg.y);
+            }else{
+                _chickensToRemove.push(_i);
+            }
         }
+
+        this.chickens = this.chickens.filter(function(value, index) {
+            return _chickensToRemove.indexOf(index) == -1;
+        })
     }
 
     /**
@@ -59,7 +72,31 @@ export default class Screen extends AbstractView{
         return this.canvas;
     }
 
-    hunt(){
+    hunt(pEvent:any){
+        const _posX = pEvent.pageX,
+            _posY = pEvent.pageY;
+        
+        for(let _i = 0; _i < this.chickens.length; _i++){
+            const _chicken = this.chickens[_i],
+                _chickenCfg = _chicken.get();
+            if(!_chickenCfg){
+                continue;
+            }
+            let _horizontalMatch = false,
+                _verticalMatch = false;
 
+            if(_chickenCfg.x < _posX && _chickenCfg.x + _chickenCfg.width > _posX){
+                _horizontalMatch = true;
+            }
+
+            if(_chickenCfg.y < _posY && _chickenCfg.y + _chickenCfg.height > _posY){
+                _verticalMatch = true;
+            }
+
+            if(_horizontalMatch && _verticalMatch){
+                _chicken.explode();
+                break;
+            }
+        }
     }
 }
