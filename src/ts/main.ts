@@ -1,10 +1,10 @@
 // ATTENTION: this is very old js code simply rewritten to typescript
 import Utils from './utils/utils';
-import Chicken from './chicken';
-import Screen from './screen';
+import Cfg from './cfg/cfg';
+import Chicken from './view/chicken';
+import Screen from './view/screen';
 
 // config
-var fps = 30;
 var width = 400;
 var height = 400;
 var spriteSize = 31;
@@ -57,7 +57,7 @@ function loop() {
 		requestAnimationFrame(loop);
 
 		redraw();
-	}, 1000 / fps);
+	}, 1000 / Cfg.fps);
 }
 
 var text = function() {
@@ -105,8 +105,11 @@ var spawn = function() {
 
 var redraw = function() {
 	screen.clear();
+	screen.tick();
 	for (var _i = chickens.length - 1; _i >= 0; _i--) {
-		screen.insert(chickens[_i].get());
+		var _chicken = chickens[_i];
+		_chicken.tick();
+		screen.insert(_chicken.get());
 		// if (chickens[_i].remove === false) {
 			
 		// } else {

@@ -1,8 +1,11 @@
-export default class Screen {
+import AbstractView from './abstractView';
+
+export default class Screen extends AbstractView{
     canvas: HTMLCanvasElement;
     context: any;
 
     constructor(pCanvas: HTMLCanvasElement){
+        super();
         this.canvas = pCanvas;
         this.context = this.canvas.getContext('2d');
     }

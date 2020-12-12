@@ -1,6 +1,7 @@
-import Utils from './utils/utils';
+import Utils from '../utils/utils';
+import AbstractView from './abstractView';
 
-export default class chicken {
+export default class chicken extends AbstractView{
     // for now
     sprite = document.getElementById('chicken');
     helperCanvas:HTMLCanvasElement = document.createElement('canvas');
@@ -32,6 +33,7 @@ export default class chicken {
     path:Array<any> = [];
 
     constructor(pConfig:any){
+        super();
         this.helperCanvas.width = pConfig.width;
         this.helperCanvas.height = pConfig.height;
         this.helperContext = this.helperCanvas.getContext('2d');
@@ -51,19 +53,24 @@ export default class chicken {
         return this.path.shift();
     }
 
-    get(){
+    _drawChicken(){
         var _sprite = this.sprites.right[0];
         if(this.path.length == 0){
             this._createPath();
         }
-        var _path = this._getPath();
-
-        var _x = Utils.getRandom(0,220);
-        var _y = Utils.getRandom(0,220);
+        
+        this.helperContext.clearRect(0, 0, this.helperCanvas.width, this.helperCanvas.height);
         this.helperContext.drawImage(this.sprite,_sprite[0] * -1,_sprite[1] * -1);
 
+        return this.helperCanvas;
+    }
+
+    get(){
+        var _chicken = this._drawChicken();
+        var _path = this._getPath();
+
         return {
-            img: this.helperCanvas,
+            img: _chicken,
             x: _path.x,
             y: _path.y
 
