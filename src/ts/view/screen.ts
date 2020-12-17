@@ -2,13 +2,13 @@ import AbstractView from './abstractView';
 import Chicken from './chicken';
 import Utils from './../utils/utils';
 
-export default class Screen extends AbstractView{
+export default class Screen extends AbstractView {
     canvas: HTMLCanvasElement;
     context: any;
-    chickens:Array<Chicken> = [];
-    screenDestEl:HTMLElement;
+    chickens: Array<Chicken> = [];
+    screenDestEl: HTMLElement;
 
-    constructor(pScreenDest:HTMLElement){
+    constructor(pScreenDest: HTMLElement) {
         super();
 
         var _me = this;
@@ -16,16 +16,16 @@ export default class Screen extends AbstractView{
         _me.canvas = document.createElement('canvas');
         _me.canvas.width = pScreenDest.clientWidth;
         _me.canvas.height = pScreenDest.clientHeight;
-        
+
         _me.context = _me.canvas.getContext('2d');
 
         _me.canvas.addEventListener('mousedown', (e) => _me.hunt(e));
 
         _me.screenDestEl = pScreenDest;
-        
+
         _me.screenDestEl.appendChild(_me.get());
 
-        window.addEventListener('resize', Utils.debounce(function(){
+        window.addEventListener('resize', Utils.debounce(function () {
             _me.canvas.width = _me.screenDestEl.clientWidth;
             _me.canvas.height = _me.screenDestEl.clientHeight;
         }));
@@ -34,80 +34,80 @@ export default class Screen extends AbstractView{
     /**
      * clear screen for next draw
      */
-    clear(){
+    clear() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     /**
      * insert things/chicken to screen
-     * 
-     * @param pChickenCfgToInsert 
+     *
+     * @param pChickenCfgToInsert
      */
-    insert(pChicken:Chicken){
+    insert(pChicken: Chicken) {
         this.chickens.push(pChicken);
     }
 
-    tick(){
-        const _chickensToRemove:Array<number> = [];
+    tick() {
+        const _chickensToRemove: Array<number> = [];
 
-        for(let _i = 0; _i < this.chickens.length; _i++){
+        for (let _i = 0; _i < this.chickens.length; _i++) {
             const _chicken = this.chickens[_i];
             _chicken.tick();
             const _chickenCfg = _chicken.get();
 
-            if(_chickenCfg !== false){
+            if (_chickenCfg !== false) {
                 this.context.drawImage(
                     _chickenCfg.img,
                     _chickenCfg.x,
                     _chickenCfg.y);
-            }else{
+            } else {
                 _chickensToRemove.push(_i);
             }
         }
 
-        this.chickens = this.chickens.filter(function(value, index) {
+        this.chickens = this.chickens.filter(function (value, index) {
             return _chickensToRemove.indexOf(index) == -1;
         });
     }
 
     /**
-     * 
+     *
      */
-    getBorders():any{
+    getBorders(): any {
         return {
-            top:0,
-            left:0,
+            top: 0,
+            left: 0,
             bottom: this.canvas.height,
             right: this.canvas.width
         }
     }
 
-    get():HTMLCanvasElement{
+    get(): HTMLCanvasElement {
         return this.canvas;
     }
 
-    hunt(pEvent:any){
+    hunt(pEvent: any) {
         const _posX = pEvent.pageX,
             _posY = pEvent.pageY;
-        
-        for(let _i = 0; _i < this.chickens.length; _i++){
+
+        for (let _i = 0; _i < this.chickens.length; _i++) {
             const _chicken = this.chickens[_i],
                 _chickenCfg = _chicken.get();
-            if(!_chickenCfg){
+            if (!_chickenCfg) {
                 continue;
             }
             let _horizontalMatch = false,
                 _verticalMatch = false;
 
-            if(_chickenCfg.x < _posX && _chickenCfg.x + _chickenCfg.width > _posX){
+            if (_chickenCfg.x < _posX && _chickenCfg.x + _chickenCfg.width > _posX) {
                 _horizontalMatch = true;
             }
 
-            if(_chickenCfg.y < _posY && _chickenCfg.y + _chickenCfg.height > _posY){
+            if (_chickenCfg.y < _posY && _chickenCfg.y + _chickenCfg.height > _posY) {
                 _verticalMatch = true;
             }
 
-            if(_horizontalMatch && _verticalMatch && !_chicken.isExploding()){
+            if (_horizontalMatch && _verticalMatch && !_chicken.isExploding()) {
                 _chicken.explode();
                 break;
             }

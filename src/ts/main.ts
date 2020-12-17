@@ -6,32 +6,32 @@ import Screen from './view/screen';
 
 var spriteSize = 31;
 
-var screen:Screen;
+var screen: Screen;
 
-var init = function() {
-	screen = new Screen(document.body);
-	
-	spawnChicken(10);
-	loop();
+var init = function () {
+    screen = new Screen(document.body);
+
+    spawnChicken(10);
+    loop();
 };
 
-function spawnChicken(pAmount:number){
-	for(let _i = 0; _i < pAmount; _i++){
-		screen.insert(new Chicken({
-			width: spriteSize,
-			height: spriteSize,
-			screen: screen
-		}));
-	}
+function spawnChicken(pAmount: number) {
+    for (let _i = 0; _i < pAmount; _i++) {
+        screen.insert(new Chicken({
+            width: spriteSize,
+            height: spriteSize,
+            screen: screen
+        }));
+    }
 }
 
 function loop() {
-	setTimeout(function() {
-		requestAnimationFrame(loop);
+    setTimeout(function () {
+        requestAnimationFrame(loop);
 
-		screen.clear();
-		screen.tick();
-	}, 1000 / Cfg.fps);
+        screen.clear();
+        screen.tick();
+    }, 1000 / Cfg.fps);
 }
 
 window.addEventListener('load', init, false);

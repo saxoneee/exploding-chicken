@@ -1,12 +1,12 @@
 import Cfg from '../cfg/cfg';
 
 export default class abstractView {
-    static _viewCounter:number = 0;
+    static _viewCounter: number = 0;
 
-    _viewId:string;   
+    _viewId: string;
     _tickCounter: number = 1;
 
-    constructor(){
+    constructor() {
         abstractView._viewCounter++;
         this._viewId = abstractView._viewCounter.toString();
     }
@@ -14,9 +14,9 @@ export default class abstractView {
     /**
      * frame draw update
      */
-    tick(){
+    tick() {
         this._tickCounter++;
-        if(this._tickCounter > Cfg.fps){
+        if (this._tickCounter > Cfg.fps) {
             this._tickCounter = 1;
         }
     }
