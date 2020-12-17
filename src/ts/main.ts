@@ -10,6 +10,9 @@ var screen: Screen;
 
 var init = function () {
     screen = new Screen(document.body);
+    screen.on('chickenExploded', function(){
+        spawnChicken(1);
+    });
 
     spawnChicken(10);
     loop();

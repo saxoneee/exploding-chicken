@@ -197,6 +197,7 @@ export default class chicken extends AbstractView {
         }
 
         if (this.exploding && this.currentSpritePos == 4) {
+            this.fireEvent('explosionEnd');
             return false;
         }
 

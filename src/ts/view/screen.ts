@@ -44,7 +44,13 @@ export default class Screen extends AbstractView {
      * @param pChickenCfgToInsert
      */
     insert(pChicken: Chicken) {
-        this.chickens.push(pChicken);
+        var _me = this;
+
+        _me.chickens.push(pChicken);
+
+        pChicken.on('explosionEnd', function(){
+            _me.fireEvent('chickenExploded');
+        });
     }
 
     tick() {
