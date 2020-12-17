@@ -2,9 +2,11 @@ import Utils from '../utils/utils';
 import Screen from './screen';
 import AbstractView from './abstractView';
 
+import chickenPngSrc from './../../assets/images/chicken2.png';
+
 export default class chicken extends AbstractView{
-    // for now
-    sprite = document.getElementById('chicken');
+    sprite:HTMLImageElement = new Image();
+    
     helperCanvas:HTMLCanvasElement = document.createElement('canvas');
     helperContext:any;
 
@@ -57,6 +59,8 @@ export default class chicken extends AbstractView{
         const _borders = this.screen.getBorders();
         this.currentPathX = Utils.getRandom(0,_borders.right - this.helperCanvas.width);
         this.currentPathY = Utils.getRandom(0,_borders.bottom - this.helperCanvas.height);
+
+        this.sprite.src = chickenPngSrc;
 
         this._drawChicken();
     }

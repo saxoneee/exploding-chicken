@@ -1,6 +1,7 @@
 var path = require('path'),
     CopyPlugin = require('copy-webpack-plugin'),
-    { CleanWebpackPlugin } = require('clean-webpack-plugin');
+    { CleanWebpackPlugin } = require('clean-webpack-plugin'),
+    HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var cfg = {
     srcPath: path.resolve('./src'),
@@ -11,7 +12,8 @@ module.exports = {
     entry: path.join(cfg.srcPath, 'ts/main.ts'),
     devtool: 'inline-source-map',
 	output: {
-		path: cfg.distPath,
+        path: cfg.distPath,
+        filename: '[name].[contenthash].js'
 	},
 
 	devServer: {
@@ -29,6 +31,10 @@ module.exports = {
               use: 'ts-loader',
               exclude: /node_modules/,
             },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+              },
         ],
     },
 
@@ -38,11 +44,12 @@ module.exports = {
 
 	plugins: [
         new CleanWebpackPlugin(),
+        /*
         new CopyPlugin({
             patterns: [
-              { from: path.join(cfg.srcPath, 'index.html'), to: cfg.distPath },
               { from: path.join(cfg.srcPath, 'assets'), to: path.join(cfg.distPath, 'assets') },
             ],
-          }),
+        }),//*/
+        new HtmlWebpackPlugin()
       ]
 };
