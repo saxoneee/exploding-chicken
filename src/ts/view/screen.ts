@@ -95,7 +95,7 @@ export default class Screen extends AbstractView{
                 _verticalMatch = true;
             }
 
-            if(_horizontalMatch && _verticalMatch){
+            if(_horizontalMatch && _verticalMatch && !_chicken.isExploding()){
                 _chicken.explode();
                 break;
             }

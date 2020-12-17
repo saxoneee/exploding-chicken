@@ -183,6 +183,10 @@ export default class chicken extends AbstractView{
         this.exploding = true;
     }
 
+    isExploding(){
+        return this.exploding;
+    }
+
     get(){
         let _chicken:HTMLCanvasElement = this.helperCanvas;
         let _path:any = this._getPath();
