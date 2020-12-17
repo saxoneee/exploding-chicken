@@ -1,3 +1,5 @@
+import './../style/style.css';
+
 import Cfg from './cfg/cfg';
 import Chicken from './view/chicken';
 import Screen from './view/screen';
