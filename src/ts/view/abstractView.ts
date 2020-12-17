@@ -42,13 +42,16 @@ export default class abstractView {
      *
      * @param pEventName
      */
-    fireEvent(pEventName:string){
+    fireEvent(...pArgs: any[]){
+        const _evArgs = [].slice.call(arguments),
+            _evName = _evArgs.shift();
+
         for(let _eventName in this._events){
-            if(_eventName === pEventName){
+            if(_eventName === _evName){
                 const _evLst = this._events[_eventName];
 
                 for(let _x = 0; _x < _evLst.length; _x++){
-                    _evLst[_x]();
+                    _evLst[_x].call(this, _evArgs);
                 }
             }
         }
