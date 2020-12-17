@@ -9,7 +9,7 @@ var spriteSize = 31;
 var screen:Screen;
 
 var init = function() {
-	screen = new Screen(500, 500, document.body);
+	screen = new Screen(document.body);
 	
 	spawnChicken(10);
 	loop();

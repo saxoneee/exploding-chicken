@@ -1,22 +1,34 @@
 import AbstractView from './abstractView';
 import Chicken from './chicken';
+import Utils from './../utils/utils';
 
 export default class Screen extends AbstractView{
     canvas: HTMLCanvasElement;
     context: any;
     chickens:Array<Chicken> = [];
+    screenDestEl:HTMLElement;
 
-    constructor(pWidth:number, pHeight: number, pScreenDest:HTMLElement){
+    constructor(pScreenDest:HTMLElement){
         super();
 
-        this.canvas = document.createElement('canvas');
-        this.canvas.height = pWidth;
-        this.canvas.width = pHeight;
-        this.context = this.canvas.getContext('2d');
+        var _me = this;
 
-        this.canvas.addEventListener('mousedown', (e) => this.hunt(e));
+        _me.canvas = document.createElement('canvas');
+        _me.canvas.width = pScreenDest.clientWidth;
+        _me.canvas.height = pScreenDest.clientHeight;
+        
+        _me.context = _me.canvas.getContext('2d');
 
-        pScreenDest.appendChild(this.get());
+        _me.canvas.addEventListener('mousedown', (e) => _me.hunt(e));
+
+        _me.screenDestEl = pScreenDest;
+        
+        _me.screenDestEl.appendChild(_me.get());
+
+        window.addEventListener('resize', Utils.debounce(function(){
+            _me.canvas.width = _me.screenDestEl.clientWidth;
+            _me.canvas.height = _me.screenDestEl.clientHeight;
+        }));
     }
 
     /**
