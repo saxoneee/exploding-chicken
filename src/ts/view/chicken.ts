@@ -57,6 +57,8 @@ export default class chicken extends AbstractView{
         const _borders = this.screen.getBorders();
         this.currentPathX = Utils.getRandom(0,_borders.right - this.helperCanvas.width);
         this.currentPathY = Utils.getRandom(0,_borders.bottom - this.helperCanvas.height);
+
+        this._drawChicken();
     }
 
     /**
@@ -131,24 +133,34 @@ export default class chicken extends AbstractView{
     tick(){
         super.tick();
 
+        let _draw = false;
+
         if(this._tickCounter%10 == 0){
+            _draw = true;
             this.currentSpritePos++;
         }
 
         if(!this.exploding){
-            if(this.currentSpritePos >=4){
+            if(this.currentSpritePos >= 4){
                 this.currentSpritePos = 0;
             }
         }else{
-            if(this.currentSpritePos >=5){
+            if(this.currentSpritePos >= 5){
                 this.currentSpritePos = 0;
             }
         }
+
+        if(_draw){
+            this._drawChicken();
+        }
     }
 
+    /**
+     * draw the chicken to the helper
+     */
     _drawChicken(){
         var _sprite:any;
-       
+        
         if(this.directionX >= 0){
             _sprite = this.sprites.right[this.currentSpritePos];
         }else{
@@ -160,8 +172,6 @@ export default class chicken extends AbstractView{
         
         this.helperContext.clearRect(0, 0, this.helperCanvas.width, this.helperCanvas.height);
         this.helperContext.drawImage(this.sprite,_sprite[0] * -1,_sprite[1] * -1);
-
-        return this.helperCanvas;
     }
 
     explode(){
@@ -170,7 +180,7 @@ export default class chicken extends AbstractView{
     }
 
     get(){
-        let _chicken:HTMLCanvasElement = this._drawChicken();
+        let _chicken:HTMLCanvasElement = this.helperCanvas;
         let _path:any = this._getPath();
 
         if(!this.exploding){
