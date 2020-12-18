@@ -6,7 +6,7 @@ export default class Screen extends AbstractView {
     canvas: HTMLCanvasElement;
     context: any;
     chickens: Array<Chicken> = [];
-    chickenPathColl:any = {};
+
     screenDestEl: HTMLElement;
 
     constructor(pScreenDest: HTMLElement) {
@@ -49,24 +49,12 @@ export default class Screen extends AbstractView {
 
         _me.chickens.push(pChicken);
 
-        pChicken.on('explosionStart', function(pChickenId:any){
-            delete _me.chickenPathColl[pChickenId];
-        });
         pChicken.on('explosionEnd', function(){
             _me.fireEvent('chickenExploded');
-        });
-
-        pChicken.on('pathCreated', function(pChickenPath:Array<any>){
-            // console.log(pChickenPath);
-            if(pChickenPath.length > 0){
-                _me.chickenPathColl[pChicken.getId()] = pChickenPath;
-            }
         });
     }
 
     tick() {
-        this._drawChickenPath();
-
         const _chickensToRemove: Array<number> = [];
 
         for (let _i = 0; _i < this.chickens.length; _i++) {
@@ -75,7 +63,19 @@ export default class Screen extends AbstractView {
             const _chickenCfg = _chicken.get();
 
             if (_chickenCfg !== false) {
+                // chicken path
+                if(_chicken.path.length > 0){
+                    this.context.beginPath();
+                    this.context.moveTo(_chicken.path[0].x + 15, _chicken.path[0].y + 15);
+                    this.context.lineTo(_chicken.path[_chicken.path.length -1].x + 15, _chicken.path[_chicken.path.length -1].y + 15);
+                    this.context.lineTo(_chicken.path[0].x + 15, _chicken.path[0].y + 15);
+                    this.context.closePath();
 
+                    this.context.strokeStyle = '#777';
+                    this.context.stroke();
+                }
+
+                // chicken
                 this.context.drawImage(
                     _chickenCfg.img,
                     _chickenCfg.x,
@@ -88,37 +88,6 @@ export default class Screen extends AbstractView {
         this.chickens = this.chickens.filter(function (value, index) {
             return _chickensToRemove.indexOf(index) == -1;
         });
-    }
-
-    _drawChickenPath(){
-        var _ausgleichX = 15,
-            _ausgleichY = 15;
-
-        for(let _id in this.chickenPathColl){
-            let _path = this.chickenPathColl[_id];
-
-
-            if(_path.length === 0){
-                break;
-            }
-            this.context.beginPath();
-            this.context.moveTo(_path[0].x + _ausgleichX, _path[0].y + _ausgleichY);
-
-            for(let _p = 1; _p < _path.length; _p++){
-                if(!_path[_p]){
-                    break;
-                }
-
-                this.context.lineTo(_path[_p].x + _ausgleichX, _path[_p].y + _ausgleichY);
-            }
-            this.context.lineTo(_path[0].x + _ausgleichX, _path[0].y + _ausgleichY);
-            this.context.closePath();
-
-            this.context.strokeStyle = '#000';
-            this.context.fillStyle = '#000';
-            this.context.stroke();
-            this.context.fill();
-        }
     }
 
     /**
