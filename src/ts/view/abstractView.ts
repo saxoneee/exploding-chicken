@@ -34,11 +34,16 @@ export default class abstractView {
      * @param pEventFn
      */
     on(pEventName:string, pEventFn:Function){
+        var _me = this;
         if(!this._events[pEventName]){
             this._events[pEventName] = [];
         }
 
-        this._events[pEventName].push(pEventFn);
+        this._events[pEventName].push({
+            refId: _me.getId(),
+            fn: pEventFn
+        });
+    }
     }
 
     /**
@@ -55,7 +60,7 @@ export default class abstractView {
                 const _evLst = this._events[_eventName];
 
                 for(let _x = 0; _x < _evLst.length; _x++){
-                    _evLst[_x].apply(this, _evArgs);
+                    _evLst[_x].fn.apply(this, _evArgs);
                 }
             }
         }
