@@ -102,7 +102,7 @@ export default class Screen extends AbstractView {
             this.context.beginPath();
             this.context.moveTo(_path[0].x + _ausgleichX, _path[0].y + _ausgleichY);
 
-            for(let _p = 1; _p < 2000; _p++){
+            for(let _p = 1; _p < _path.length; _p++){
                 if(!_path[_p]){
                     break;
                 }
