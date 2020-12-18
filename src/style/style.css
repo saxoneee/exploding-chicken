@@ -9,3 +9,16 @@ html,body{
 canvas{
     box-shadow:0 0 2px red;
 }
+
+#options{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:#fff;
+    padding:10px;
+    border:1px solid #555;
+}
+
+#options input{
+    margin-right:5px;
+}

@@ -78,7 +78,7 @@ export default class chicken extends AbstractView {
         this.directionX = (pForceDirectionX !== false) ? pForceDirectionX : Utils.getRandom(-1, 1);
         this.directionY = (pForceDirectionY !== false) ? pForceDirectionY : Utils.getRandom(-1, 1);
 
-        for (var _i = 0; _i < Utils.getRandom(1, 1000); _i++) {
+        for (var _i = 0; _i < Utils.getRandom(1, 10000); _i++) {
             const _nextX = _posStartX + (_i * this.directionX),
                 _nextY = _posStartY + (_i * this.directionY);
 
@@ -87,6 +87,8 @@ export default class chicken extends AbstractView {
                 y: _nextY,
             });
         }
+
+        this.fireEvent('pathCreated', this.path);
     }
 
     /**
@@ -179,8 +181,10 @@ export default class chicken extends AbstractView {
     }
 
     explode() {
-        this.currentSpritePos = 0;
+        this.currentSpritePos = -1;
         this.exploding = true;
+        this.path = [];
+        this.fireEvent('explosionStart', this.getId());
     }
 
     isExploding() {
@@ -188,21 +192,21 @@ export default class chicken extends AbstractView {
     }
 
     get() {
-        let _chicken: HTMLCanvasElement = this.helperCanvas;
-        let _path: any = this._getPath();
+        let _path: any = [];
 
-        if (!this.exploding) {
+        if (!this.isExploding()) {
+            _path = this._getPath();
             this.currentPathX = _path.x;
             this.currentPathY = _path.y;
         }
 
-        if (this.exploding && this.currentSpritePos == 4) {
+        if (this.isExploding() && this.currentSpritePos == 4) {
             this.fireEvent('explosionEnd');
             return false;
         }
 
         return {
-            img: _chicken,
+            img: this.helperCanvas,
             x: this.currentPathX,
             y: this.currentPathY,
             width: this.helperCanvas.width,

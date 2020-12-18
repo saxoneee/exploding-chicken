@@ -11,3 +11,8 @@ click on chicken to let them burst
 ## usage
 
 https://saxoneee.github.io/exploding-chicken/dist/
+
+## todos
+
+* checkbox to show/hide paths
+* unbind events

@@ -6,12 +6,16 @@ export default class Screen extends AbstractView {
     canvas: HTMLCanvasElement;
     context: any;
     chickens: Array<Chicken> = [];
-    screenDestEl: HTMLElement;
 
-    constructor(pScreenDest: HTMLElement) {
+    screenDestEl: HTMLElement;
+    options: any;
+
+    constructor(pScreenDest: HTMLElement, pOptions: any) {
         super();
 
         var _me = this;
+
+        _me.options = pOptions;
 
         _me.canvas = document.createElement('canvas');
         _me.canvas.width = pScreenDest.clientWidth;
@@ -54,15 +58,31 @@ export default class Screen extends AbstractView {
     }
 
     tick() {
-        const _chickensToRemove: Array<number> = [];
+        const _me = this,
+            _chickensToRemove: Array<number> = [];
 
-        for (let _i = 0; _i < this.chickens.length; _i++) {
-            const _chicken = this.chickens[_i];
+        for (let _i = 0; _i < _me.chickens.length; _i++) {
+            const _chicken = _me.chickens[_i];
             _chicken.tick();
             const _chickenCfg = _chicken.get();
 
             if (_chickenCfg !== false) {
-                this.context.drawImage(
+                // chicken path
+                if(_me.options.showChickenPath){
+                    if(_chicken.path.length > 0){
+                        _me.context.beginPath();
+                        _me.context.moveTo(_chicken.path[0].x + 15, _chicken.path[0].y + 15);
+                        _me.context.lineTo(_chicken.path[_chicken.path.length -1].x + 15, _chicken.path[_chicken.path.length -1].y + 15);
+                        _me.context.lineTo(_chicken.path[0].x + 15, _chicken.path[0].y + 15);
+                        _me.context.closePath();
+
+                        _me.context.strokeStyle = '#777';
+                        _me.context.stroke();
+                    }
+                }
+
+                // chicken
+                _me.context.drawImage(
                     _chickenCfg.img,
                     _chickenCfg.x,
                     _chickenCfg.y);
@@ -71,7 +91,7 @@ export default class Screen extends AbstractView {
             }
         }
 
-        this.chickens = this.chickens.filter(function (value, index) {
+        _me.chickens = _me.chickens.filter(function (value, index) {
             return _chickensToRemove.indexOf(index) == -1;
         });
     }
