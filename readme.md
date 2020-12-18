@@ -14,5 +14,5 @@ https://saxoneee.github.io/exploding-chicken/dist/
 
 ## todos
 
-* checkbox to show/hide paths
 * unbind events
+* faster explosion animation
