@@ -49,6 +49,9 @@ export default class Screen extends AbstractView {
 
         _me.chickens.push(pChicken);
 
+        pChicken.on('explosionStart', function(pChickenId:any){
+            delete _me.chickenPathColl[pChickenId];
+        });
         pChicken.on('explosionEnd', function(){
             _me.fireEvent('chickenExploded');
         });
