@@ -58,7 +58,9 @@ export default class Screen extends AbstractView {
 
         pChicken.on('pathCreated', function(pChickenPath:Array<any>){
             // console.log(pChickenPath);
-            _me.chickenPathColl[pChicken.getId()] = pChickenPath;
+            if(pChickenPath.length > 0){
+                _me.chickenPathColl[pChicken.getId()] = pChickenPath;
+            }
         });
     }
 

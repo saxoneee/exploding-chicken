@@ -183,6 +183,7 @@ export default class chicken extends AbstractView {
     explode() {
         this.currentSpritePos = 0;
         this.exploding = true;
+        this.path = [];
         this.fireEvent('explosionStart', this.getId());
     }
 
@@ -191,21 +192,21 @@ export default class chicken extends AbstractView {
     }
 
     get() {
-        let _chicken: HTMLCanvasElement = this.helperCanvas;
-        let _path: any = this._getPath();
+        let _path: any = [];
 
-        if (!this.exploding) {
+        if (!this.isExploding()) {
+            _path = this._getPath();
             this.currentPathX = _path.x;
             this.currentPathY = _path.y;
         }
 
-        if (this.exploding && this.currentSpritePos == 4) {
+        if (this.isExploding() && this.currentSpritePos == 4) {
             this.fireEvent('explosionEnd');
             return false;
         }
 
         return {
-            img: _chicken,
+            img: this.helperCanvas,
             x: this.currentPathX,
             y: this.currentPathY,
             width: this.helperCanvas.width,
