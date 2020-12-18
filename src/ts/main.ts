@@ -3,13 +3,23 @@ import './../style/style.css';
 import Cfg from './cfg/cfg';
 import Chicken from './view/chicken';
 import Screen from './view/screen';
+import OptionsBox from './view/optionsBox';
 
 var spriteSize = 31;
 
 var screen: Screen;
+var options: any;
 
 var init = function () {
-    screen = new Screen(document.body);
+    const _me = this;
+
+    _me.options = {
+        showChickenPath: Cfg.showChickenPath
+    }
+
+    screen = new Screen(document.body, _me.options);
+    options = new OptionsBox(document.body, _me.options);
+
     screen.on('chickenExploded', function(){
         spawnChicken(1);
     });
