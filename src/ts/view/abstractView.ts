@@ -13,6 +13,10 @@ export default class abstractView {
         this._viewId = abstractView._viewCounter.toString();
     }
 
+    getId(){
+        return this._viewId;
+    }
+
     /**
      * frame draw update
      */
@@ -51,7 +55,7 @@ export default class abstractView {
                 const _evLst = this._events[_eventName];
 
                 for(let _x = 0; _x < _evLst.length; _x++){
-                    _evLst[_x].call(this, _evArgs);
+                    _evLst[_x].apply(this, _evArgs);
                 }
             }
         }
