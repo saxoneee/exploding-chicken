@@ -141,17 +141,22 @@ export default class chicken extends AbstractView {
 
         let _draw = false;
 
-        if (this._tickCounter % 10 == 0) {
-            _draw = true;
-            this.currentSpritePos++;
-        }
+        if(this.isExploding()){
+            if (this._tickCounter % 3 == 0) {
+                _draw = true;
+                this.currentSpritePos++;
+            }
 
-        if (!this.exploding) {
-            if (this.currentSpritePos >= 4) {
+            if (this.currentSpritePos >= 5) {
                 this.currentSpritePos = 0;
             }
-        } else {
-            if (this.currentSpritePos >= 5) {
+        }else{
+            if (this._tickCounter % 10 == 0) {
+                _draw = true;
+                this.currentSpritePos++;
+            }
+
+            if (this.currentSpritePos >= 4) {
                 this.currentSpritePos = 0;
             }
         }
