@@ -46,7 +46,9 @@ export default class chicken extends AbstractView {
 
     exploding: boolean = false;
 
-    constructor(pConfig: any) {
+    options: any;
+
+    constructor(pConfig: any, pOptions: any) {
         super();
         this.helperCanvas.width = pConfig.width;
         this.helperCanvas.height = pConfig.height;
@@ -54,6 +56,7 @@ export default class chicken extends AbstractView {
 
         this.helperContext = this.helperCanvas.getContext('2d');
 
+        this.options = pOptions;
 
         this.currentSpritePos = 0;
         const _borders = this.screen.getBorders();
@@ -99,35 +102,44 @@ export default class chicken extends AbstractView {
      * @return {step}
      */
     _getPath() {
-        const _borders = this.screen.getBorders();
+        const _me = this,
+            _borders = this.screen.getBorders();
+        let _nextStep;
 
-        if (this.path.length == 0) {
-            this._createPath(false, false);
+        if (_me.path.length == 0) {
+            _me._createPath(false, false);
         }
 
-        let _nextStep = this.path.shift();
+        if(_me.options.stopChickenMovement){
+            _nextStep = {
+                x: _me.currentPathX,
+                y: _me.currentPathY
+            }
+        }else{
+            _nextStep = _me.path.shift();
 
-        let _forceX: any = false,
-            _forceY: any = false;
+            let _forceX: any = false,
+                _forceY: any = false;
 
-        if (_nextStep.x < _borders.left) {
-            _forceX = Utils.getRandom(0, 1);
-        }
-        if (_nextStep.x + this.helperCanvas.width > _borders.right) {
-            _forceX = Utils.getRandom(-1, 0);
-        }
+            if (_nextStep.x < _borders.left) {
+                _forceX = Utils.getRandom(0, 1);
+            }
+            if (_nextStep.x + _me.helperCanvas.width > _borders.right) {
+                _forceX = Utils.getRandom(-1, 0);
+            }
 
-        if (_nextStep.y < _borders.top) {
-            _forceY = Utils.getRandom(0, 1);
-        }
-        if (_nextStep.y + this.helperCanvas.height > _borders.bottom) {
-            _forceY = Utils.getRandom(-1, 0);
-        }
+            if (_nextStep.y < _borders.top) {
+                _forceY = Utils.getRandom(0, 1);
+            }
+            if (_nextStep.y + _me.helperCanvas.height > _borders.bottom) {
+                _forceY = Utils.getRandom(-1, 0);
+            }
 
-        if (_forceX !== false || _forceY !== false) {
-            this.path = [];
-            this._createPath(_forceX, _forceY);
-            _nextStep = this.path.shift();
+            if (_forceX !== false || _forceY !== false) {
+                _me.path = [];
+                _me._createPath(_forceX, _forceY);
+                _nextStep = _me.path.shift();
+            }
         }
 
         return _nextStep;

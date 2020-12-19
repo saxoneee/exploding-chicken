@@ -12,6 +12,7 @@ export default class optionsBox {
         _me.options = pOptions;
 
         _me._addOption('showChickenPath', 'show chicken paths', pOptions.showChickenPath)
+        _me._addOption('stopChickenMovement', 'stop chicken movement', pOptions.stopChickenMovement)
     }
 
     _addOption(pName:string, pLabel:string, pValue: any){
@@ -35,6 +36,5 @@ export default class optionsBox {
         });
 
         this.element.appendChild(_label);
-
     }
 }

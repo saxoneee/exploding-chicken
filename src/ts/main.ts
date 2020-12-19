@@ -8,17 +8,17 @@ import OptionsBox from './view/optionsBox';
 var spriteSize = 31;
 
 var screen: Screen;
+var optionsBox: any;
 var options: any;
 
 var init = function () {
-    const _me = this;
-
-    _me.options = {
-        showChickenPath: Cfg.showChickenPath
+    options = {
+        showChickenPath: Cfg.showChickenPath,
+        stopChickenMovement: Cfg.stopChickenMovement,
     }
 
-    screen = new Screen(document.body, _me.options);
-    options = new OptionsBox(document.body, _me.options);
+    screen = new Screen(document.body, options);
+    optionsBox = new OptionsBox(document.body, options);
 
     screen.on('chickenExploded', function(){
         spawnChicken(1);
@@ -34,7 +34,7 @@ function spawnChicken(pAmount: number) {
             width: spriteSize,
             height: spriteSize,
             screen: screen
-        }));
+        },options));
     }
 }
 

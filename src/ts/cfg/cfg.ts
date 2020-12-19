@@ -2,5 +2,7 @@
 export default new class cfg {
     fps: number = 30;
 
-    showChickenPath: boolean = false;
+    showChickenPath: boolean = true;
+
+    stopChickenMovement: boolean = true;
 }

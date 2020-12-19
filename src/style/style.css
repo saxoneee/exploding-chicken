@@ -22,3 +22,7 @@ canvas{
 #options input{
     margin-right:5px;
 }
+
+#options label{
+    display:block;
+}
