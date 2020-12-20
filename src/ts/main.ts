@@ -1,24 +1,18 @@
 import './../style/style.css';
 
-import Cfg from './cfg/cfg';
+import Options from './cfg/options';
+import OptionsBox from './view/optionsBox';
 import Chicken from './view/chicken';
 import Screen from './view/screen';
-import OptionsBox from './view/optionsBox';
 
 var spriteSize = 31;
 
 var screen: Screen;
 var optionsBox: any;
-var options: any;
 
 var init = function () {
-    options = {
-        showChickenPath: Cfg.showChickenPath,
-        stopChickenMovement: Cfg.stopChickenMovement,
-    }
-
-    screen = new Screen(document.body, options);
-    optionsBox = new OptionsBox(document.body, options);
+    screen = new Screen(document.body, Options);
+    optionsBox = new OptionsBox(document.body, Options);
 
     screen.on('chickenExploded', function(){
         spawnChicken(1);
@@ -34,7 +28,7 @@ function spawnChicken(pAmount: number) {
             width: spriteSize,
             height: spriteSize,
             screen: screen
-        },options));
+        },Options));
     }
 }
 
@@ -44,7 +38,7 @@ function loop() {
 
         screen.clear();
         screen.tick();
-    }, 1000 / Cfg.fps);
+    }, 1000 / Options.fps);
 }
 
 window.addEventListener('load', init, false);

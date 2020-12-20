@@ -11,29 +11,41 @@ export default class optionsBox {
 
         _me.options = pOptions;
 
-        _me._addOption('showChickenPath', 'show chicken paths', pOptions.showChickenPath)
-        _me._addOption('stopChickenMovement', 'stop chicken movement', pOptions.stopChickenMovement)
+        _me._addOption('number','fps','fps');
+        _me._addOption('checkbox','showChickenPath', 'show chicken paths');
+        _me._addOption('checkbox', 'stopChickenMovement', 'stop chicken movement');
     }
 
-    _addOption(pName:string, pLabel:string, pValue: any){
+    _addOption(pType: string, pName: string, pLabel: string){
         const _me = this,
             _label = document.createElement('label'),
-            _checkbox = document.createElement('input');
+            _span = document.createElement('span'),
+            _input = document.createElement('input');
 
-        _checkbox.type = 'checkbox';
-
-        if(pValue){
-            _checkbox.checked = true;
+        _input.type = pType;
+        _input.name = pName;
+console.log(
+    'asd',pName, _me.options
+);
+        switch(pType){
+            case 'checkbox':
+                _input.checked = _me.options[pName];
+                _input.addEventListener('click', function(){
+                    _me.options[pName] = _input.checked
+                });
+            break;
+            default:
+                console.log(_me.options[pName]);
+                _input.value = _me.options[pName];
+                _input.addEventListener('input', function(){
+                    _me.options[pName] = parseInt(_input.value)
+                });
+            break;
         }
 
-        _label.appendChild(_checkbox);
-        _label.appendChild(document.createTextNode(pLabel));
-
-        _checkbox.name = pName;
-
-        _checkbox.addEventListener('click', function(){
-            _me.options[pName] = _checkbox.checked
-        });
+        _span.appendChild(document.createTextNode(pLabel));
+        _label.appendChild(_span);
+        _label.appendChild(_input);
 
         this.element.appendChild(_label);
     }

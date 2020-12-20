@@ -19,10 +19,21 @@ canvas{
     border:1px solid #555;
 }
 
-#options input{
+#options span{
+    display:inline-block;
+    text-align:right;
+    width:200px;
+    vertical-align:top;
     margin-right:5px;
 }
 
 #options label{
     display:block;
+}
+#options input{
+    vertical-align: middle;
+}
+
+#options input[name="fps"]{
+    width:50px;
 }

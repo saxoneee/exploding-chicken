@@ -1,4 +1,4 @@
-import Cfg from '../cfg/cfg';
+import Options from '../cfg/options';
 
 export default class abstractView {
     static _viewCounter: number = 0;
@@ -22,7 +22,7 @@ export default class abstractView {
      */
     tick() {
         this._tickCounter++;
-        if (this._tickCounter > Cfg.fps) {
+        if (this._tickCounter > Options.fps) {
             this._tickCounter = 1;
         }
     }
