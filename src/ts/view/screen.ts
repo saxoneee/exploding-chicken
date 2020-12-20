@@ -70,10 +70,14 @@ export default class Screen extends AbstractView {
                 // chicken path
                 if(_me.options.showChickenPath){
                     if(_chicken.path.length > 0){
+                        const _firstStep = _chicken.path[0],
+                            _lastStep = _chicken.path[_chicken.path.length - 1],
+                            _mH = _chickenCfg.width/2,
+                            _mV = _chickenCfg.height/2;
+
                         _me.context.beginPath();
-                        _me.context.moveTo(_chicken.path[0].x + 15, _chicken.path[0].y + 15);
-                        _me.context.lineTo(_chicken.path[_chicken.path.length -1].x + 15, _chicken.path[_chicken.path.length -1].y + 15);
-                        _me.context.lineTo(_chicken.path[0].x + 15, _chicken.path[0].y + 15);
+                        _me.context.moveTo(_firstStep.x + _mH, _firstStep.y + _mV);
+                        _me.context.lineTo(_lastStep.x + _mH, _lastStep.y + _mV);
                         _me.context.closePath();
 
                         _me.context.strokeStyle = '#777';
