@@ -64,7 +64,15 @@ export default class Screen extends AbstractView {
         for (let _i = 0; _i < _me.chickens.length; _i++) {
             const _chicken = _me.chickens[_i];
             _chicken.tick();
-            const _chickenCfg = _chicken.get();
+            let _chickenCfg = _chicken.get(),
+                _force: any,
+                _c = 0;
+            while(_c < 10 && _chickenCfg !== false && !_me.checkObstacles(_chickenCfg.x, _chickenCfg.y, _chickenCfg.width, _chickenCfg.height)){
+                _c++;
+                _chicken.recalcPath();
+                // _chickenCfg = _chicken.get();
+                console.log(_c, _chickenCfg);
+            }
 
             if (_chickenCfg !== false) {
                 // chicken path
@@ -98,6 +106,25 @@ export default class Screen extends AbstractView {
         _me.chickens = _me.chickens.filter(function (value, index) {
             return _chickensToRemove.indexOf(index) == -1;
         });
+    }
+
+    checkObstacles(pPosX: number, pPosY: number, pWidth: number, pHeight: number){
+        const _me = this;
+            if (pPosX < 0) {
+                return false;
+            }
+            if (pPosX + pWidth > _me.canvas.width) {
+                return false;
+            }
+
+            if (pPosY < 0) {
+                return false;
+            }
+            if (pPosY + pHeight > _me.canvas.height) {
+                return false;
+            }
+
+        return true;
     }
 
     /**

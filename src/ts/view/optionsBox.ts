@@ -24,9 +24,7 @@ export default class optionsBox {
 
         _input.type = pType;
         _input.name = pName;
-console.log(
-    'asd',pName, _me.options
-);
+
         switch(pType){
             case 'checkbox':
                 _input.checked = _me.options[pName];
@@ -35,7 +33,6 @@ console.log(
                 });
             break;
             default:
-                console.log(_me.options[pName]);
                 _input.value = _me.options[pName];
                 _input.addEventListener('input', function(){
                     _me.options[pName] = parseInt(_input.value)

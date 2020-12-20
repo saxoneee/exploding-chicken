@@ -18,7 +18,7 @@ var init = function () {
         spawnChicken(1);
     });
 
-    spawnChicken(10);
+    spawnChicken(Options.chickenAmount);
     loop();
 };
 

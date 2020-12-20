@@ -37,10 +37,14 @@ export default class chicken extends AbstractView {
 
     path: Array<any> = [];
 
+    lastPathX: number;
+    lastPathY: number;
     currentPathX: number;
     currentPathY: number;
     directionX: number;
     directionY: number;
+    width: number;
+    height: number;
 
     screen: Screen;
 
@@ -50,8 +54,10 @@ export default class chicken extends AbstractView {
 
     constructor(pConfig: any, pOptions: any) {
         super();
-        this.helperCanvas.width = pConfig.width;
-        this.helperCanvas.height = pConfig.height;
+        this.width = pConfig.width;
+        this.height = pConfig.height;
+        this.helperCanvas.width = this.width;
+        this.helperCanvas.height = this.height;
         this.screen = pConfig.screen;
 
         this.helperContext = this.helperCanvas.getContext('2d');
@@ -119,32 +125,25 @@ export default class chicken extends AbstractView {
             }
         }else{
             _nextStep = _me.path.shift();
-
-            let _forceX: any = false,
-                _forceY: any = false;
-
-            if (_nextStep.x < _borders.left) {
-                _forceX = Utils.getRandom(0, 1);
-            }
-            if (_nextStep.x + _me.helperCanvas.width > _borders.right) {
-                _forceX = Utils.getRandom(-1, 0);
-            }
-
-            if (_nextStep.y < _borders.top) {
-                _forceY = Utils.getRandom(0, 1);
-            }
-            if (_nextStep.y + _me.helperCanvas.height > _borders.bottom) {
-                _forceY = Utils.getRandom(-1, 0);
-            }
-
-            if (_forceX !== false || _forceY !== false) {
-                _me.path = [];
-                _me._createPath(_forceX, _forceY);
-                _nextStep = _me.path.shift();
-            }
         }
 
         return _nextStep;
+    }
+
+    recalcPath(){
+        const _me = this;
+
+        // _me.exploding = true;
+        // console.log('path',_me.path);
+        _me.path = [];
+        _me._createPath(_me.currentPathX - _me.lastPathX, _me.currentPathY - _me.lastPathY);
+
+        console.log(_me.currentPathX - _me.lastPathX, _me.currentPathY - _me.lastPathY);
+
+        _me.currentPathX = _me.lastPathX;
+        _me.currentPathY = _me.lastPathY;
+
+        // console.log(_me.currentPathX, _me.currentPathY, _me.lastPathX, _me.lastPathY);
     }
 
     /**
@@ -215,6 +214,8 @@ export default class chicken extends AbstractView {
 
         if (!this.isExploding()) {
             _path = this._getPath();
+            this.lastPathX = this.currentPathX;
+            this.lastPathY = this.currentPathY;
             this.currentPathX = _path.x;
             this.currentPathY = _path.y;
         }
