@@ -75,19 +75,21 @@ export default class chicken extends AbstractView {
      * @param pForceDirectionY 1|0|-1|false
      */
     _createPath(pForceDirectionX: any, pForceDirectionY: any) {
-        let _posStartX = this.currentPathX,
-            _posStartY = this.currentPathY;
+        const _me = this;
 
-        this.directionX = (pForceDirectionX !== false) ? pForceDirectionX : Utils.getRandom(-1, 1);
-        this.directionY = (pForceDirectionY !== false) ? pForceDirectionY : Utils.getRandom(-1, 1);
+        let _posStartX = _me.currentPathX,
+            _posStartY = _me.currentPathY;
+
+        _me.directionX = (pForceDirectionX !== false) ? pForceDirectionX : Utils.getRandom(-1, 1);
+        _me.directionY = (pForceDirectionY !== false) ? pForceDirectionY : Utils.getRandom(-1, 1);
 
         for (var _i = 0; _i < Utils.getRandom(1, 10000); _i++) {
-            const _nextX = _posStartX + (_i * this.directionX),
-                _nextY = _posStartY + (_i * this.directionY);
+            const _nextX = _posStartX + _i * _me.directionX,
+                _nextY = _posStartY + _i * _me.directionY
 
-            this.path.push({
+            _me.path.push({
                 x: _nextX,
-                y: _nextY,
+                y: _nextY
             });
         }
 
